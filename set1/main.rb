@@ -6,6 +6,10 @@ def hex2base64(a)
     [[a].pack("H*")].pack("m0") 
 end
 
+def base642hex(a)
+    a.unpack("m0")[0].unpack("H*")[0]
+end
+
 def fixedXOR(a, b)
     result = (a.to_i(16) ^ b.to_i(16)).to_s(16)
     if (result.length % 2).odd?
@@ -85,9 +89,6 @@ def findSecret(filename)
         end
     end
     puts "Secret phrase: #{best_result['secret_phrase']}"
-    puts "Original line: #{decoded_line}"
-    puts "XOR char: #{best_result['xor_char']}"
-    puts "Score: #{best_result['score']}"
 end
 
 def repeatingKeyXOR(message, key)
@@ -98,6 +99,72 @@ def repeatingKeyXOR(message, key)
     hex_message = message.unpack("H*")[0]
     hex_key = full_key.unpack("H*")[0]
     fixedXOR(hex_message, hex_key)
+end
+
+def ascii2bin(a)
+    result = ""
+    a.each_char{|c| result += "%08b" % c.ord }
+    result
+end
+
+def hammingDistance(a, b)
+    a = ascii2bin(a)
+    b = ascii2bin(b)
+    raise "ERROR: Hamming: Non equal lengths" if a.length != b.length
+    (a.chars.zip(b.chars)).count {|l, r| l != r}
+end
+
+def breakRepeatingKeyXOR(filename)
+    lines = ""
+    file = File.new(filename, "r")
+    while (line = file.gets)
+        lines += line.chomp
+    end
+    lines = base642hex(lines)
+    smallest_keysize = 2
+    largest_keysize = 40
+    distances = []
+    n = 8 # re-run a few times while changing this number to be sure of top result
+
+    for i in (smallest_keysize*2..largest_keysize*2).step(2)
+        a = lines.slice(0, i*n)
+        b = lines.slice(i*n, i*n)
+        c = lines.slice(2*i*n, i*n)
+        normdist1 = hammingDistance(a, b)/(Float(i) * 8)
+        normdist2 = hammingDistance(b, c)/(Float(i) * 8)
+        normdist3 = hammingDistance(a, c)/(Float(i) * 8)
+        average = (normdist1 + normdist2 + normdist3)/3
+        distances.push({"keysize" => i/2, "distance" => average})
+    end
+
+    sorted = distances.sort_by { |k| k["distance"] }
+    keysize = sorted[0]['keysize']
+
+    blocks = {}
+    for i in 0..keysize - 1
+        blocks[i] = ""
+    end
+
+    for i in 0..(lines.length/2) - 1
+        blocks[i%keysize] += lines.slice(i*2, 2)
+    end
+
+    key = ""
+    blocks.each do |position, string|
+        result = singlebyteXOR(string)
+        key += result["xor_char"]
+    end
+
+    puts "The key is '#{key}'"
+
+    full_key = ""
+    for i in 0..(lines.length/2) - 1
+        full_key += key[i % key.length]
+    end
+
+    hex_key = full_key.unpack("H*")[0]
+    puts "Here is the decrypted text:"
+    puts [fixedXOR(lines, hex_key)].pack("H*")
 end
 
 # tests
@@ -119,7 +186,6 @@ three_input = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3
 result = singlebyteXOR(three_input)
 puts "Exercise 3"
 puts "Secret phrase: #{result['secret_phrase']}"
-puts "XOR char: #{result['xor_char']}"
 
 puts "Exercise 4"
 findSecret("4.txt")
@@ -127,5 +193,12 @@ findSecret("4.txt")
 phrase = "Burning 'em, if you ain't quick and nimble
 I go crazy when I hear a cymbal"
 solution = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
-file if !repeatingKeyXOR(phrase, "ICE").eql?(solution)
+fail if !repeatingKeyXOR(phrase, "ICE").eql?(solution)
 puts "Exercise 5 passed"
+
+s1 = "this is a test"
+s2 = "wokka wokka!!!"
+fail if !hammingDistance(s1, s2).eql?(37)
+puts "Exercise 6 part 1 passed"
+# Secret key is 'Terminator X: Bring the noise'
+breakRepeatingKeyXOR("6.txt")
