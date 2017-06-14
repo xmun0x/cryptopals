@@ -1,4 +1,4 @@
-def decrypt()
+def detect_aes()
     lines = []
     file = File.new("8.txt", "r")
     while (line = file.gets)
@@ -21,4 +21,4 @@ def decrypt()
     end
 end
 
-decrypt()
+detect_aes()
