@@ -2,10 +2,6 @@
 
 require "openssl"
 
-def base642plain(a)
-    a.unpack("m0")[0]
-end
-
 def aesDecrypt(message, key)
 	decipher = OpenSSL::Cipher::AES.new(128, :ECB)
   	decipher.decrypt
@@ -21,7 +17,8 @@ def decrypt()
     while (line = file.gets)
         lines += line.chomp
     end
-    lines = base642plain(lines)
+    # convert base64 to plaintext
+    lines = lines.unpack("m0")[0]
     puts aesDecrypt(lines, key)
 end
 
