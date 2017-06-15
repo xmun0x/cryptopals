@@ -7,7 +7,6 @@ def hex2base64(a)
 end
 
 # test
-#
 if __FILE__ == $0
     # plaintext: "I'm killing your brain like a poisonous mushroom"
     one_hexstr = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f75732"\
