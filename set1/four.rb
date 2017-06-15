@@ -13,7 +13,7 @@ def find_secret(filename)
             best_result = result
         end
     end
-    return best_result['secret_phrase']
+    best_result['secret_phrase']
 end
 
 # test
