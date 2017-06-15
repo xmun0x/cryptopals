@@ -2,7 +2,7 @@
 
 # http://www.cryptopals.com/sets/1/challenges/8
 
-def detect_aes(filename)
+def detectAES(filename)
     lines = []
     file = File.new(filename, "r")
     while (line = file.gets)
@@ -29,7 +29,7 @@ if __FILE__ == $0
                "d11b0348542bb5708649af70dc06f4fd5d2d69c744cd2839475c9dfdbc1d46597949d9c7e82bf5a08"\
                "649af70dc06f4fd5d2d69c744cd28397a93eab8d6aecd566489154789a6b0308649af70dc06f4fd5d"\
                "2d69c744cd283d403180c98c8f6db1f2a3f9c4040deb0ab51b29933f2c123c58386b06fba186a"
-    line = detect_aes("8.txt")
+    line = detectAES("8.txt")
     fail if !line.eql?(aes_line)
     puts "Challenge #8 test passed"
 end
