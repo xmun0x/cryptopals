@@ -4,11 +4,11 @@
 
 require_relative "./three"
 
-def findSecret(filename)
+def find_secret(filename)
     file = File.new(filename, "r")
     best_result = {"score" => 0}
     while (line = file.gets)
-        result = singlebyteXOR(line) 
+        result = single_byte_xor(line) 
         if !result['secret_phrase'].empty? && result['score'] > best_result['score'] 
             best_result = result
         end
@@ -19,6 +19,6 @@ end
 # test
 if __FILE__ == $0
     solution = "Now that the party is jumping\n5"
-    fail if !findSecret("4.txt").eql?(solution)
+    fail unless find_secret("4.txt").eql?(solution)
     puts "Challenge #4 test passed"
 end

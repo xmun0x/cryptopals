@@ -60,7 +60,7 @@ def break_repeating_key_xor(filename)
 
     key = ""
     blocks.each do |position, string|
-        result = singlebyteXOR(string)
+        result = single_byte_xor(string)
         key += result["xor_char"]
     end
 
@@ -73,7 +73,7 @@ def break_repeating_key_xor(filename)
 
     hex_key = full_key.unpack("H*")[0]
     puts "Here is the decrypted text:"
-    puts [fixedXOR(lines, hex_key)].pack("H*")
+    puts [fixed_xor(lines, hex_key)].pack("H*")
 
     key
 end

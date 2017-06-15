@@ -2,12 +2,12 @@
 
 # http://www.cryptopals.com/sets/1/challenges/3
 
-def singlebyteXOR(a)
+def single_byte_xor(a)
     # taken from http://www.math.cornell.edu/~mec/2003-2004/cryptography/subs/frequencies.html
     most_common_letters = ["E", "T", "A", "O", "I", "N", "S", "H", "R", "D", "L", "U", " "]
 
     # filter out most strings by only allowing printable characters 
-    valid_char_vals =*(32..126)
+    valid_char_vals = *(32..126)
     valid_char_vals.push(10) # \n
     result = {
         "score" => 0,
@@ -15,7 +15,7 @@ def singlebyteXOR(a)
         "secret_phrase" => "",
         "encoded_phase" => ""
     }
-    for i in 1..255 do
+    (1..255).each do |i|
         fullstring = ""
         j = 0
         moveon = false 
@@ -59,7 +59,7 @@ end
 # test
 if __FILE__ == $0
     three_input = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
-    result = singlebyteXOR(three_input)
-    fail if !result['secret_phrase'].eql?("Cooking MC's like a pound of bacon")
+    result = single_byte_xor(three_input)
+    fail unless result['secret_phrase'].eql?("Cooking MC's like a pound of bacon")
     puts "Challenge #3 test passed"
 end

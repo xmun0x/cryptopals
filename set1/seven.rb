@@ -4,7 +4,7 @@
 
 require "openssl"
 
-def aesDecrypt(message, key)
+def aes_decrypt(message, key)
     decipher = OpenSSL::Cipher::AES.new(128, :ECB)
     decipher.decrypt
     decipher.padding = 0
@@ -20,14 +20,14 @@ def decrypt(filename, key)
     end
     # convert base64 to plaintext
     lines = lines.unpack("m0")[0]
-    aesDecrypt(lines, key)
+    aes_decrypt(lines, key)
 end
 
 # tests
 if __FILE__ == $0
     key = "YELLOW SUBMARINE"
     result = decrypt("7.txt", key)
-    fail if !result.length.eql?(2880)
-    fail if !result.slice(0, 33).eql?("I'm back and I'm ringin' the bell")
+    fail unless result.length.eql?(2880)
+    fail unless result.slice(0, 33).eql?("I'm back and I'm ringin' the bell")
     puts "Challenge #7 tests passed"
 end

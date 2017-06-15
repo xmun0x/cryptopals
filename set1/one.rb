@@ -13,6 +13,6 @@ if __FILE__ == $0
     one_hexstr = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f75732"\
                  "06d757368726f6f6d"
     one_base64str = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
-    fail if !hex2base64(one_hexstr).eql?(one_base64str)
+    fail unless hex2base64(one_hexstr).eql?(one_base64str)
     puts "Challenge #1 test passed"
 end
