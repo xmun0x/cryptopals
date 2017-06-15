@@ -5,11 +5,11 @@
 require "openssl"
 
 def aesDecrypt(message, key)
-	decipher = OpenSSL::Cipher::AES.new(128, :ECB)
-  	decipher.decrypt
-  	decipher.padding = 0
-  	decipher.key = key
-	plain = decipher.update message + decipher.final
+    decipher = OpenSSL::Cipher::AES.new(128, :ECB)
+    decipher.decrypt
+    decipher.padding = 0
+    decipher.key = key
+    plain = decipher.update message + decipher.final
 end
 
 def decrypt(filename, key)

@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-#
+
 # http://www.cryptopals.com/sets/1/challenges/8
 
 def detect_aes(filename)
