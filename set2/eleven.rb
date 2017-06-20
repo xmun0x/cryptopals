@@ -31,9 +31,10 @@ def encryption_oracle(message)
 end
 
 def detect_aes_mode()
-    input = "Z"* 16 * 4
     blocksize = 16
+    input = "Z"* blocksize * 4
     output = encryption_oracle(input)
+
     mode = "CBC"
     if output.slice(blocksize*2, blocksize).eql?(output.slice(blocksize*3, blocksize))
        mode = "ECB"
