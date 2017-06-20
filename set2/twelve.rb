@@ -56,7 +56,7 @@ def msgappend_encrypt(message)
                    "dwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0"\
                    "b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK"
     message = message + append_bytes.unpack("m0")[0]
-    encrypted = ecb_encrypt(message, $key)
+    ecb_encrypt(message, $key)
 end
 
 
