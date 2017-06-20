@@ -4,7 +4,7 @@
 
 require "openssl"
 
-def aes_decrypt(message, key)
+def ecb_decrypt(message, key)
     decipher = OpenSSL::Cipher::AES.new(128, :ECB)
     decipher.decrypt
     decipher.padding = 0
@@ -20,7 +20,7 @@ def decrypt(filename, key)
     end
     # convert base64 to plaintext
     lines = lines.unpack("m0")[0]
-    aes_decrypt(lines, key)
+    ecb_decrypt(lines, key)
 end
 
 # tests

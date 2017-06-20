@@ -4,8 +4,9 @@
 
 def fixed_xor(a, b)
     result = (a.to_i(16) ^ b.to_i(16)).to_s(16)
-    if (result.length % 2).odd?
-        result = "0" + result
+    # ruby cuts off initial zeros for some reason, so result could end up shorter than input
+    unless result.length.eql?(a.length)
+        result = "0" * (a.length - result.length) + result
     end
     result
 end
