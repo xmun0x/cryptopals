@@ -58,7 +58,7 @@ def cbc_encrypt(message, key, iv)
     [results.join("")].pack("m0")
 end
 
-# test
+# tests
 if __FILE__ == $0
     body = ""
     file = File.new("10.txt", "r")
@@ -76,5 +76,5 @@ if __FILE__ == $0
     result = cbc_encrypt(result, key, iv)
     fail unless result.eql?(body)
 
-    puts "Challenge #10 test passed"
+    puts "Challenge #10 tests passed"
 end
