@@ -20,8 +20,8 @@ def compute_block_size()
 end
 
 def cipher_detection(blocksize)
-	input = "Z" * blocksize * 4
-	mode = "CBC"
+    input = "Z" * blocksize * 4
+    mode = "CBC"
     output = msgappend_encrypt(input)
 	if output.slice(blocksize*2, blocksize).eql?(output.slice(blocksize*3, blocksize))
 	   mode = "ECB"
