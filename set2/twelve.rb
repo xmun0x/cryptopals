@@ -32,7 +32,7 @@ end
 def byte_at_a_time_decryption(blocksize)
     padding = ""
     encr_padding = msgappend_encrypt(padding)
-    chars_to_decrypt = encr_padding.length + blocksize
+    chars_to_decrypt = encr_padding.length
 
     decrypted_append = ""
     last_decrypted = nil
