@@ -55,7 +55,7 @@ def msgappend_encrypt(message)
     append_bytes = "Um9sbGluJyBpbiBteSA1LjAKV2l0aCBteSByYWctdG9wIGRvd24gc28gbXkgaGFpciBjYW4gYmxv"\
                    "dwpUaGUgZ2lybGllcyBvbiBzdGFuZGJ5IHdhdmluZyBqdXN0IHRvIHNheSBoaQpEaWQgeW91IHN0"\
                    "b3A/IE5vLCBJIGp1c3QgZHJvdmUgYnkK"
-    message = message + append_bytes.unpack("m0")[0]
+    message = add_padding(message + append_bytes.unpack("m0")[0], 16)
     ecb_encrypt(message, $key)
 end
 
@@ -73,7 +73,7 @@ if __FILE__ == $0
     fail unless cipher_name.eql?("ECB")
 
     result = byte_at_a_time_decryption(blocksize)
-    fail unless result.length.eql?(138)
+    fail unless result.length.eql?(139)
     fail unless result.slice(0, blocksize).eql?("Rollin' in my 5.")
 
     puts "Challenge #12 tests passed"

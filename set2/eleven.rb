@@ -11,8 +11,9 @@ def generate_random_bytes(n)
 end
 
 def encryption_oracle(message)
+    blocksize = 16
     # randomly encrypts a message with either ecb or cbc
-    key = generate_random_bytes(16)
+    key = generate_random_bytes(blocksize)
 
     prepend_num_bytes = 5 + rand(6)
     prepend_bytes = generate_random_bytes(prepend_num_bytes)
@@ -22,9 +23,9 @@ def encryption_oracle(message)
 
     coin_flip =  rand(2)
     if coin_flip.eql?(0)
-        encrypted = ecb_encrypt(message, key)
+        encrypted = add_padding(ecb_encrypt(message, key), blocksize)
     else
-        iv = generate_random_bytes(16)
+        iv = generate_random_bytes(blocksize)
         encrypted = cbc_encrypt(message, key, iv)
     end
     encrypted
