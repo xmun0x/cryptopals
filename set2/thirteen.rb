@@ -76,7 +76,8 @@ if __FILE__ == $0
     # this is blocksize - "email=".length so that "admin" + padding will be in it's own block
     input2 = "Z" * 10 + "admin" + "\x0b" * 11
     ciphertext2 = encrypt_profile_for(input2, key, blocksize)
-    copypasta_ciphertext = ciphertext1.slice(0,32)  + ciphertext2.slice(16, 16)
+
+    copypasta_ciphertext = ciphertext1.slice(0, 32)  + ciphertext2.slice(16, 16)
     hax0r = decrypt_profile_for(copypasta_ciphertext, key)
     desired_result = {"email"=>"attak@foo.bar", "uid"=>"10", "role"=>"admin"}
     fail unless hax0r.eql?(desired_result)
