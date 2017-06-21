@@ -1,6 +1,6 @@
 # cryptopals
 
-My cryptopals solutions. There isn't a ton of explanation in the exercises. To get a better explanation of how things work, I really recommend the [coursera crypto course](https://www.coursera.org/learn/crypto).
+My cryptopals solutions. There isn't a ton of explanation in the exercises. To get a better understanding of how things work, I  recommend the [coursera crypto course](https://www.coursera.org/learn/crypto).
 
 | set | % complete |
 | --- | --- |
