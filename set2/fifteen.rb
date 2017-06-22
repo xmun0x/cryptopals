@@ -23,6 +23,6 @@ end
 
 # test
 if __FILE__ == $0
-    fail unless remove_padding("ICE ICE BABY\x04\x04\x04\x04", 16).eql?("ICE ICE BABY")
+    fail unless remove_padding("ICE ICE BABY\x04\x04\x04\x04").eql?("ICE ICE BABY")
     "Challenge #15 test passed"
 end
