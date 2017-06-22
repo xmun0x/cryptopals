@@ -4,6 +4,7 @@
 
 require_relative "./ten"
 require_relative "./eleven"
+require_relative "./fifteen"
 
 $key = generate_random_bytes(16)
 
@@ -48,7 +49,7 @@ def byte_at_a_time_decryption(blocksize)
         last_decrypted = decrypted_append
         end
     end
-    decrypted_append 
+    remove_padding(decrypted_append)
 end
 
 def msgappend_encrypt(message)
@@ -73,7 +74,7 @@ if __FILE__ == $0
     fail unless cipher_name.eql?("ECB")
 
     result = byte_at_a_time_decryption(blocksize)
-    fail unless result.length.eql?(139)
+    fail unless result.length.eql?(138)
     fail unless result.slice(0, blocksize).eql?("Rollin' in my 5.")
 
     puts "Challenge #12 tests passed"

@@ -5,15 +5,8 @@
 require_relative "./nine"
 require_relative "./ten"
 require_relative "./eleven"
+require_relative "./fifteen"
 
-def remove_padding(string)
-    padding = string[-1].unpack("H*")[0].to_i(16)
-    if string[-padding] == string[-1]
-        return string.slice(0, string.length - padding)
-    else
-        return string
-    end
-end
 
 def parse_query_string(input)
     parts = input.split("&")
