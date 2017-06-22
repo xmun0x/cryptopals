@@ -41,30 +41,32 @@ def parse_cipher_segments(blocksize)
     encr_padding = msgappend_encrypt(padding)
     cipher_length = encr_padding.length
     (blocksize+1..blocksize*2).each do |i|
-        padding = "\x00" * i
-        encr_padding = msgappend_encrypt(padding)
         found_padding = encr_padding.index(encrypted_padding_block)
         if found_padding
-            segments['prefix_length'] = found_padding - (i - blocksize)
+            segments['prefix_length'] = found_padding - (i - 1 - blocksize)
             segments['suffix_length'] = encr_padding.length - found_padding - blocksize
             break
         end
+        padding = "\x00" * i
+        encr_padding = msgappend_encrypt(padding)
     end
     segments
 end
 
 def byte_at_a_time_decryption(blocksize)
     segments = parse_cipher_segments(blocksize)
+
+    # fill out prepended block(s)
     prefix_padding  = blocksize - (segments["prefix_length"] % blocksize)
-    start_i = segments["prefix_length"] + prefix_padding
+    size = segments["prefix_length"] + prefix_padding + segments["suffix_length"] - 1
     last_decrypted = nil
     decrypted_suffix = ""
     while !last_decrypted.eql?(decrypted_suffix)
-        padding = "\x00" * (prefix_padding + segments["suffix_length"] - decrypted_suffix.length - 1)
-		encr_padding = msgappend_encrypt(padding).slice(start_i, segments["suffix_length"])
+        padding = "\x00" * (size - segments["prefix_length"] - decrypted_suffix.length)
+		encr_padding = msgappend_encrypt(padding)[0..size]
         (0..255).each do |i|
             plain = padding + decrypted_suffix + i.chr
-            encr_plain = msgappend_encrypt(plain).slice(start_i, segments["suffix_length"])
+            encr_plain = msgappend_encrypt(plain)[0..size]
             if encr_plain.eql?(encr_padding)
                 decrypted_suffix += i.chr
                 break
