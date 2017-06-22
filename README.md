@@ -5,7 +5,7 @@ My cryptopals solutions. There isn't a ton of explanation in the exercises. To g
 | set | completed |
 | --- | --- |
 | 1 Basics | 8/8 |
-| 2 Block crypto| 5/8 |
+| 2 Block crypto| 7/8 |
 | 3 Block & stream crypto | 0/8 |
 | 4 Stream crypto and randomness | 0/8 |
 | 5 Diffie-Hellman and friends | 0/8 |
