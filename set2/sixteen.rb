@@ -45,12 +45,13 @@ def cbc_bitflip_attack()
     desired_string = ";admin=true;"
     input = "A" * blocksize
     cipher = encrypt(input)
+
+    # start with the block before the block with user-controlled bytes
     start = (same_blocks - 1)* blocksize
     cipher_hex = cipher.slice(start, desired_string.length).unpack("H*")[0]
     input_hex = ("A" * desired_string.length).unpack("H*")[0]
     desired_string_hex = desired_string.unpack("H*")[0]
 
-    # start with the block before the block with user-controlled bytes
     res = fixed_xor(fixed_xor(cipher_hex, input_hex), desired_string_hex)
     cipher[start..start + desired_string.length - 1] = [res].pack("H*")
     is_admin(cipher)
