@@ -38,8 +38,7 @@ def cbc_encrypt(message, key, iv)
 
     # add padding to messages that need it
     unless (message.length % blocksize).eql?(0)
-        size = (message.length / blocksize) * blocksize + blocksize
-        message = add_padding(message, size)
+        message = add_padding(message, blocksize)
     end
 
     message = message.unpack("H*")[0]
