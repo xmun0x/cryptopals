@@ -16,7 +16,7 @@ def encrypt(string)
     string = string.gsub("=", "'='")
     string = string.gsub(";", "';'")
     string = "comment1=cooking%20MCs;userdata=" + string + ";comment2=%20like%20a%20pound%20of%20bacon"
-    # this method return base64-encoded ciphertext. decode before returning
+    # cbc_encrypt returns base64-encoded ciphertext, which must be decoded
     cbc_encrypt(string, $key, $iv).unpack("m0")[0]
 end
 
