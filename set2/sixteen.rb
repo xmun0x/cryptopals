@@ -43,11 +43,13 @@ def cbc_bitflip_attack()
     end
 
     desired_string = ";admin=true;"
-    input = "A" * blocksize
+    input = "A" * blocksize * 2
     cipher = encrypt(input)
 
-    # start with the block before the block with user-controlled bytes
-    start = (same_blocks - 1)* blocksize
+    # start with the block with user-controlled bytes
+    # could start the block before, but it's risky without more information about how many bytes
+    # users control in the next block
+    start = same_blocks * blocksize
     cipher_hex = cipher.slice(start, desired_string.length).unpack("H*")[0]
     input_hex = ("A" * desired_string.length).unpack("H*")[0]
     desired_string_hex = desired_string.unpack("H*")[0]
