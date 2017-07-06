@@ -6,7 +6,7 @@ require_relative "./nine"
 
 def remove_padding(string)
     padding = string[-1].unpack("H*")[0].to_i(16)
-    if padding > 16
+    if padding > 16 or padding < 1
         fail
     end
 

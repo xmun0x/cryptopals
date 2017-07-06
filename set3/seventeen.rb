@@ -23,8 +23,7 @@ $random_strings = [
 ]
 
 def encrypt()
-    #string = $random_strings[rand($random_strings.length)]
-    string = "MDAwMDAxV2l0aCB0aGUgYmFzcyBraWNrZWQgaW4gYW5kIHRoZSBWZWdhJ3MgYXJlIHB1bXBpbic="
+    string = $random_strings[rand($random_strings.length)]
     string = string.unpack("m0")[0]
     cbc_encrypt(string, $key, $iv).unpack("m0")[0]
 end
@@ -46,7 +45,8 @@ def decrypt_block(blocks)
     second = blocks[16..31]
     (1..16).each do |i|
         padding = ("%02x" % i) * i
-        (0..255).each do |j|
+        # weird things happen in the last block when xoring null or 01 byte
+        (2..255).each do |j|
             index = 16 - i
             tail = first[index..15]
             elem = tail.unpack("H*")[0]
@@ -66,12 +66,13 @@ def attack()
     blocksize = 16
     ciphertext = encrypt()
     blocks = ciphertext.length / blocksize
+    # if the IV is not known, the first block of the plaintext cannot be recovered
     ciphertext = $iv + ciphertext
     plain = ""
     (0..blocks - 1).each do |i|
         plain += decrypt_block(ciphertext.slice(i*blocksize, blocksize*2))
     end
-    plain
+    remove_padding(plain)
 end
 
 # tests
