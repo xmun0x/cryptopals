@@ -75,8 +75,8 @@ def attack()
     remove_padding(plain)
 end
 
-# tests
+# test
 if __FILE__ == $0
     puts attack()
-    puts "Challenge #17 tests passed"
+    puts "Challenge #17 test passed"
 end
