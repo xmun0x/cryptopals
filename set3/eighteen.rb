@@ -4,7 +4,6 @@
 
 require_relative "../set1/seven"
 require_relative "../set2/ten"
-require_relative "../set2/eleven"
 require_relative "../set2/fifteen"
 
 def encrypt_ctr_block(block, key, nonce, counter)
@@ -19,6 +18,11 @@ end
 def ctr_encrypt(message, key, nonce)
     blocksize = 16
     blocks = message.length / blocksize
+
+    if (message.length % blocksize).eql?(0)
+        blocks -= 1
+    end
+
     encrypted =  ""
 
     (0..blocks).each do |i|
