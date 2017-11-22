@@ -72,7 +72,30 @@ strings = [
 ]
 
 def ctr_crack(ciphertexts)
-   shortest = ciphertexts.min{|a,b| a.size <=> b.size }
+    shortest = ciphertexts.min{|a,b| a.size <=> b.size }
+    truncated = []
+    ciphertexts.each do |i|
+       truncated.push(i.slice(0, shortest.length))
+    end
+
+    keysize = shortest.length
+
+    blocks = {}
+    (0..keysize - 1).each do |i|
+        blocks[i] = ""
+    end
+
+    (0..(lines.length / 2) - 1).each do |i|
+        blocks[i % keysize] += lines.slice(i * 2, 2)
+    end
+
+    key = ""
+    blocks.each do |position, string|
+        result = single_byte_xor(string)
+        key += result["xor_char"]
+    end
+
+    # decrypt blocks
 end
 
 # test
@@ -82,13 +105,12 @@ if __FILE__ == $0
     ciphertexts = []
     strings.each do |i|
         i_decoded = i.unpack("m0")[0]
-        ciphertexts.push(ctr_encrypt(i_decoded, key, nonce))
+        ciphertexts.push(base642hex(ctr_encrypt(i_decoded, key, nonce)))
     end
     ctr_crack(ciphertexts)
     puts "Challenge #19 test passed"
     strings.each do |i|
         i_decoded = i.unpack("m0")[0]
-        puts i_decoded
     end
     puts "Challenge #20 test passed"
 end
